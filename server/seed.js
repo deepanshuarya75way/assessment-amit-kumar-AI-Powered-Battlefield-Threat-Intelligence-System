@@ -21,7 +21,7 @@ const seedData = async () => {
     const officer = await User.create({
       name: 'John Miller',
       email: 'commander@defense.mil',
-      password: hashedPassword,
+      password: 'command123',
       role: 'commander',
       rank: 'Captain',
       sector: 'Alpha'

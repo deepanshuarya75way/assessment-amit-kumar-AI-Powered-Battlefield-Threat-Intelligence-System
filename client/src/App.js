@@ -7,6 +7,7 @@ import ThreatFeed from './pages/ThreatFeed';
 import Dashboard from './pages/Dashboard';
 import ThreatMap from './pages/ThreatMap';
 import { useAuth } from './context/AuthContext';
+import ThreatDetails from './pages/ThreatDetails';
 import './App.css';
 
 // Protected Route Component
@@ -21,6 +22,11 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
+    <>
+   <button onClick={()=> window.location.href='/feed'}>
+    Live Intelligence Feed 
+     </button>
+   
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
@@ -41,6 +47,15 @@ function App() {
         } 
       />
       <Route 
+      path="/threats/:id"
+      element={
+        <ProtectedRoute>
+          <ThreatDetails/>
+        </ProtectedRoute>
+      }
+      />
+      
+      <Route 
         path="/dashboard" 
         element={
           <ProtectedRoute>
@@ -59,6 +74,7 @@ function App() {
       {/* Fallback route */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 }
 

@@ -150,4 +150,35 @@ const generateDailySummary = async (recentThreats) => {
   }
 };
 
-module.exports = { analyzeThreat, generateDailySummary };
+
+const answerFollowUp=async(threat,question, conversation =[]) =>{
+  const apiKey=process.env.GEMINI_API_KEY || process.env.AI_API_KEY
+
+  if(!apiKey){
+    return `Threat Score: ${threat.threatScore  ?? 'N/A'},
+    Priority: ${threat.priority || 'N/A'},
+    Analysis: ${threat.aiAnalysis?.summary || threat.description}
+    Verify the available evidence  before confirming this assessment.`;
+
+  }
+
+  const ai = new GoogleGenAI({apiKey})
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents:` 
+      Threat: $ {JSON.stringify(threat)}
+      Previous conversation : $ {JSON.stringify(conversation.slice(-10))}
+      Operator question: ${question}
+      Answer concisely. Do not invent evidence.
+      Explain scores, assumptions, and uncertainties.
+      `
+    
+
+      
+    
+  });
+  return response.text.trim();
+
+};
+
+module.exports = { analyzeThreat, generateDailySummary,answerFollowUp };

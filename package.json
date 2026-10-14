@@ -8,6 +8,7 @@
     "seed": "node server/seed.js"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "eslint-plugin-import-helpers": "^2.0.2"
   }
 }

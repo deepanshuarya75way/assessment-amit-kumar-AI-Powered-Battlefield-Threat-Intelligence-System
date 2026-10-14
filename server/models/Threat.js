@@ -49,6 +49,37 @@ const threatSchema = new mongoose.Schema({
     confidence: { type: Number, min: 0, max: 100, default: null },
     analyzedAt: { type: Date, default: null }
   },
+
+
+  conversation :{
+    type:[{
+      role:{
+        type:String,
+        enum:['user','assistant'],
+        required:true
+      },
+      content:{
+        type:String,
+        required:true,
+        trim:true,
+        maxlength:[2000,'Conversation messages cannot exceed 2000 characters']
+      },
+      createdAt:{
+        type:Date,
+        default: Date.now
+      },
+      user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        default:null
+      }
+
+    }],
+    default:[]
+  },
+
+
+  
   // Status tracking
   status: {
     type: String,

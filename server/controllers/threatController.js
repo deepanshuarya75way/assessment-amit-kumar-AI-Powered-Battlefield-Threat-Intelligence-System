@@ -131,9 +131,56 @@ const updateThreat = async (req, res) => {
   }
 };
 
+const chatWithThreat =async (req,res) => {
+  try {
+    const {question }  =req.body;
+
+    if(!question || !question.trim()  || question.length >2000){
+      return res.status(400).json({
+        success: false,
+        error: 'Question is required (max 2000 characters ).'
+
+      });
+    }
+    const threat =await Threat.findById(req.params.id);
+
+    if (!threat){
+      return res.status(404).json({
+        success: false,
+        error: 'Threat report not  found.'
+      });
+    }
+     const history =threat.conversation || [];
+     const answer =await aiService.answerFollowUp(
+      threat, question.trim(), history
+     );
+
+     threat.conversation.push (
+      {role: 'user', content: question.trim(), user: req.user._id},
+      {role :'assistant ,content: answer'}
+     );
+
+     await threat.save();
+
+     res.status(200).json({
+      success:true,
+      data: { answer , conversation: threat.conversation}
+
+     });
+  }  catch (error) {
+    console.error('Threat chat error:',error);
+    res.status(500).json({
+      success: false,
+      error: 'Unable to process follow-up question.'
+    });
+  }
+};
+
+
 // @desc    Delete threat report
 // @route   DELETE /api/threats/:id
 // @access  Private (Commander only)
+
 const deleteThreat = async (req, res) => {
   try {
     const threat = await Threat.findById(req.params.id);
@@ -154,4 +201,4 @@ const deleteThreat = async (req, res) => {
   }
 };
 
-module.exports = { getThreats, getThreatById, createThreat, updateThreat, deleteThreat };
+module.exports = { getThreats, getThreatById, createThreat, updateThreat, deleteThreat,chatWithThreat };

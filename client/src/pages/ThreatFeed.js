@@ -70,7 +70,11 @@ function ThreatFeed() {
       ) : (
         <div className="threat-list">
           {threats.map((threat) => (
-            <div key={threat._id} className="threat-card glass-card">
+            <div key={threat._id} className="threat-card glass-card"
+            onClick={() => navigate(`/threats/${threat._id}`)}
+            style={{ cursor:'pointer '}}
+            >
+
               <div className="threat-card-header">
                 <div className="threat-meta">
                   <span className={`threat-badge ${getPriorityBadgeClass(threat.priority)}`}>

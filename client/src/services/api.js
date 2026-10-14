@@ -1,3 +1,4 @@
+// import apiService from '../services/api';
 // API Configuration
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
@@ -55,6 +56,10 @@ const apiService = {
     update: (id, threatData) => apiService.request(`/threats/${id}`, {
       method: 'PUT',
       body: JSON.stringify(threatData),
+    }),
+    chat: (id,question) => apiService.request(`/threats/${id}/chat`,{
+      method:'POST',
+      body:JSON.stringify({question}),
     }),
     delete: (id) => apiService.request(`/threats/${id}`, {
       method: 'DELETE',

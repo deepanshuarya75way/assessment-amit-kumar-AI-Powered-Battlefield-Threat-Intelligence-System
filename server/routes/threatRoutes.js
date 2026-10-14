@@ -1,5 +1,5 @@
 const express = require('express');
-const { getThreats, getThreatById, createThreat, updateThreat, deleteThreat } = require('../controllers/threatController');
+const { getThreats, getThreatById, createThreat, updateThreat, deleteThreat ,chatWithThreat} = require('../controllers/threatController');
 const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
@@ -9,6 +9,9 @@ router.use(protect);
 
 // @route   GET /api/threats
 router.get('/', getThreats);
+
+
+router.post('/:id/chat', chatWithThreat);
 
 // @route   GET /api/threats/:id
 router.get('/:id', getThreatById);
